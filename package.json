@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "",
-    "heroku-postbuild": "rimraf dist && webpack --config ./webpack.production.config.js --progress --profile --colors", 
+    "heroku-postbuild": "rimraf dist && webpack --config ./webpack.production.config.js --progress --profile --colors",
     "start": "node app",
     "dev": "node server-dev",
     "build": "rimraf dist && webpack --config ./webpack.production.config.js --progress --profile --colors",
@@ -32,7 +32,8 @@
     "redux-form": "^6.5.0",
     "rimraf": "^2.5.2",
     "redux-thunk": "^2.2.0",
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "webpack": "^1.12.9"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
