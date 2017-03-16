@@ -70,7 +70,7 @@ module.exports = {
         'Config': JSON.stringify(process.env.ENV === 'production' ? {
           serverUrl: process.env.serverUrl
         } : {
-          serverUrl: "https://the-auth-server.herokuapp.com"
+          serverUrl: "http://localhost:3041"
         })
       }]
 };

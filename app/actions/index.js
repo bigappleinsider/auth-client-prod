@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import { browserHistory } from 'react-router';
 
-import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FETCH_MESSAGE } from './types';
+import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FETCH_MESSAGE,
+  FETCH_QUESTIONAIRE, FETCH_QUESTIONAIRES} from './types';
 
 import Config from 'Config';
 
@@ -12,6 +13,8 @@ function authError(error) {
     payload: error
   };
 }
+
+
 export function fetchMessage() {
   return function(dispatch) {
     axios.get(Config.serverUrl, {
@@ -25,6 +28,91 @@ export function fetchMessage() {
       });
   };
 }
+
+export function newQuestionaire() {
+  return function(dispatch) {
+    dispatch({
+      type: FETCH_QUESTIONAIRE,
+      payload: null
+    });
+  };
+}
+
+
+export function fetchQuestionaires(page = 1) {
+  return function(dispatch) {
+    axios.get(`${Config.serverUrl}/questionaire`, {
+      params: {
+        page
+      },
+      headers: { authorization: localStorage.getItem('token')}
+    })
+      .then(response => {
+        dispatch({
+          type: FETCH_QUESTIONAIRES,
+          payload: response.data
+        });
+      });
+  };
+}
+
+export function fetchQuestionaire(id) {
+  return function(dispatch) {
+    axios.get(`${Config.serverUrl}/questionaire/${id}`, {
+      headers: { authorization: localStorage.getItem('token')}
+    })
+      .then(response => {
+        dispatch({
+          type: FETCH_QUESTIONAIRE,
+          payload: response.data
+        });
+      });
+  };
+}
+
+export function deleteQuestionaire(id) {
+  return function(dispatch) {
+    axios.delete(`${Config.serverUrl}/questionaire/${id}`, {
+      headers: { authorization: localStorage.getItem('token')}
+    })
+      .then(response => {
+        //console.log("dfnsdkjfnkjsdnfjk");
+        //browserHistory.push(null, '/questionaire');
+        dispatch(fetchQuestionaires());
+      });
+  };
+}
+
+
+
+export function createQuestionaire({ name, questions }) {
+  return function(dispatch) {
+    axios.post(`${Config.serverUrl}/questionaire`, {
+      name, questions
+    }, {
+      headers: { authorization: localStorage.getItem('token')}
+    })
+      .then(response => {
+        browserHistory.push('/questionaire');
+      });
+  };
+}
+
+
+export function updateQuestionaire({ id, name, questions }) {
+  return function(dispatch) {
+    axios.patch(`${Config.serverUrl}/questionaire/${id}`, {
+      name,
+      questions
+    }, {
+      headers: { authorization: localStorage.getItem('token')}
+    })
+      .then(response => {
+        browserHistory.push('/questionaire');
+      });
+  };
+}
+
 
 export function signupUser({ email, password }) {
   return function(dispatch) {
