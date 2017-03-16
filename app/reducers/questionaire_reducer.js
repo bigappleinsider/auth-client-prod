@@ -1,6 +1,6 @@
 import { FETCH_QUESTIONAIRES, FETCH_QUESTIONAIRE } from '../actions/types';
 
-const INITIAL_STATE = { questionaires: [] };
+const INITIAL_STATE = { questionaire: null, questionaires: null };
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {

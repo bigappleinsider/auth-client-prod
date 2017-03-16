@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm, Field, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
 
 import * as actions from '../../actions';
@@ -15,6 +16,26 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
 const required = value => value ? undefined : 'Required';
 
 
+const renderQuestions = ({ fields, meta: { touched, error } }) => (
+  <div>
+    <button type="button" className="btn btn-primary" onClick={() => fields.push({})}>
+      <i className="fa fa-plus"></i> Add Question
+    </button>
+    {fields.map((question, index) =>
+      <div className="row" key={index}>
+        <div className="col-md-11">
+          <Field name={`${question}.text`} type="text" component={renderField} label="Question" />
+        </div>
+        <div className="col-md-1">
+          <button type="button" className="btn btn-default" title="Remove Question" onClick={() => fields.remove(index)}>
+            <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+);
+
 class Questionaire extends Component {
   componentWillReceiveProps(nextProps) {
     console.log("componentWillReceiveProps", nextProps);
@@ -23,13 +44,17 @@ class Questionaire extends Component {
     if (this.props.params.id !== 'new') {
       this.props.fetchQuestionaire(this.props.params.id);
     }
+    else{
+      this.props.newQuestionaire();
+      console.log(this.state, this.props);
+    }
   }
-  handleFormSubmit({ name }) {
+  handleFormSubmit({ name, questions }) {
     if(this.props.params.id !== 'new') {
-      this.props.updateQuestionaire({ id: this.props.params.id, name: name });
+      this.props.updateQuestionaire({ id: this.props.params.id, name: name, questions: questions });
     }
     else{
-      this.props.createQuestionaire({ name });
+      this.props.createQuestionaire({ name, questions });
     }
   }
   render() {
@@ -37,12 +62,21 @@ class Questionaire extends Component {
 
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+        <div className="btn-group">
+          <Link to="/questionaire" className="btn btn-default tt">
+            <i className="fa fa-long-arrow-left"></i>
+          </Link>
+          <button type="submit" className="btn btn-primary">
+            <i className="fa fa-save"></i>
+          </button>
+        </div>
         <Field
           name="name"
           label="Name"
           validate={[ required ]}
           component={renderField}
           type="text" />
+          <FieldArray name="questions" component={renderQuestions} />
           <button type="submit" className="btn btn-primary">Save</button>
       </form>
     );
@@ -51,10 +85,11 @@ class Questionaire extends Component {
 
 Questionaire = reduxForm({
   form: 'questionaire',
-  enableReinitialize: true,
-  fields: ['name']
-
+  enableReinitialize: true
 })(Questionaire);
-export default connect(state => ({
-  initialValues: state.questionaire.questionaire
-}), actions)(Questionaire);
+
+export default connect(function(state) {
+  return {
+    initialValues: state.questionaire.questionaire
+  };
+}, actions)(Questionaire);

@@ -4,17 +4,25 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../actions';
 
+import queryString from 'query-string';
+
 import { Link } from 'react-router';
 
 class Dashboard extends Component {
+  componentWillReceiveProps(nextProps) {
+    if(this.props.location.query.page !== nextProps.location.query.page){
+      this.props.fetchQuestionaires(nextProps.location.query.page);
+    }
+  }
   componentWillMount() {
-    this.props.fetchQuestionaires();
+    this.props.fetchQuestionaires(this.props.location.query.page);
   }
   deleteItem(id) {
     this.props.deleteQuestionaire(id);
   }
   renderQuestionaire() {
-    return this.props.questionaires.map((item, key) => {
+    console.log("renderQuestionaire", this.props);
+    return this.props.questionaires.docs.map((item, key) => {
       return (
         <tr key={key}>
           <td>{key}</td>
@@ -34,6 +42,23 @@ class Dashboard extends Component {
       );
     });
   }
+  renderPagination() {
+    const currentPage = this.props.location.query.page || 1;
+    console.log("renderPagination", currentPage);
+    //const prevQuery = this.props.location.query;
+    //prevQuery['page'] = this.props.location.query.page--;
+    const prevUrl = `/questionaire?` + queryString.stringify({ ...this.props.location.query, page: parseInt(currentPage)-1});
+    const nextUrl = `/questionaire?` + queryString.stringify({ ...this.props.location.query, page: parseInt(currentPage)+1});
+
+    return (
+        <ul className="pagination">
+          <li className={currentPage<=1?"disabled":""}>
+            <Link to={currentPage<=1?"#":prevUrl}><span aria-hidden="true">&laquo;</span> Previous</Link>
+          </li>
+          <li><Link to={nextUrl}>Next <span aria-hidden="true">&raquo;</span></Link></li>
+        </ul>
+    );
+  }
   render() {
     return (
       <div>
@@ -51,16 +76,17 @@ class Dashboard extends Component {
             </tr>
           </thead>
           <tbody>
-          {this.renderQuestionaire()}
+          {this.props.questionaires && this.renderQuestionaire()}
           </tbody>
         </table>
+        {this.renderPagination()}
       </div>
     );
   }
 };
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps tate", state);
+  console.log("the mapStateToProps tate", state);
   return { questionaires: state.questionaire.questionaires };
 }
 
