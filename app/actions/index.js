@@ -98,6 +98,20 @@ export function createQuestionaire({ name, questions }) {
   };
 }
 
+export function filloutSurvey({ questions, id }) {
+  return function(dispatch) {
+    axios.post(`${Config.serverUrl}/survey/${id}`, {
+      questions
+    }, {
+      headers: { authorization: localStorage.getItem('token')}
+    })
+      .then(response => {
+        //should be static thank you page instead
+        browserHistory.push('/questionaire');
+      });
+  };
+}
+
 
 export function updateQuestionaire({ id, name, questions }) {
   return function(dispatch) {

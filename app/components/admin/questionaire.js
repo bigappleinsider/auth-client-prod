@@ -24,7 +24,7 @@ const renderQuestions = ({ fields, meta: { touched, error } }) => (
     {fields.map((question, index) =>
       <div className="row" key={index}>
         <div className="col-md-11">
-          <Field name={`${question}.text`} type="text" component={renderField} label="Question" />
+          <Field name={`${question}.questionText`} type="text" component={renderField} label="Question" />
         </div>
         <div className="col-md-1">
           <button type="button" className="btn btn-default" title="Remove Question" onClick={() => fields.remove(index)}>
