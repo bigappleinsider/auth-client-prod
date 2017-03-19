@@ -9,6 +9,7 @@ import Feature from './components/feature';
 import Welcome from './components/welcome';
 import Dashboard from './components/admin/dashboard';
 import Questionaire from './components/admin/questionaire';
+import Submissions from './components/admin/submissions';
 import Survey from './components/user/survey';
 
 import RequireAuth from './components/auth/require_auth';
@@ -24,6 +25,7 @@ export default (
 		<Route path="questionaire" component={RequireAuth(Dashboard)} />
 		<Route path="questionaire/:id" component={RequireAuth(Questionaire)} />
 		<Route path="questionaire/new" component={RequireAuth(Questionaire)} />
+		<Route path="submissions/:id" component={RequireAuth(Submissions)} />
 		<Route path="survey/:id" component={RequireAuth(Survey)} />
 	</Route>
 );

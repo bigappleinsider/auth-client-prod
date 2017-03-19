@@ -4,3 +4,4 @@ export const AUTH_ERROR = 'auth_error';
 export const FETCH_MESSAGE = 'fetch_message';
 export const FETCH_QUESTIONAIRES = 'fetch_questionaires';
 export const FETCH_QUESTIONAIRE = 'fetch_questionaire';
+export const FETCH_SUBMISSIONS = 'fetch_submissions';

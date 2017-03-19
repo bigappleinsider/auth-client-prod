@@ -3,7 +3,7 @@ import axios from 'axios';
 import { browserHistory } from 'react-router';
 
 import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FETCH_MESSAGE,
-  FETCH_QUESTIONAIRE, FETCH_QUESTIONAIRES} from './types';
+  FETCH_QUESTIONAIRE, FETCH_QUESTIONAIRES, FETCH_SUBMISSIONS} from './types';
 
 import Config from 'Config';
 
@@ -50,6 +50,20 @@ export function fetchQuestionaires(page = 1) {
       .then(response => {
         dispatch({
           type: FETCH_QUESTIONAIRES,
+          payload: response.data
+        });
+      });
+  };
+}
+
+export function fetchSubmissions(id) {
+  return function(dispatch) {
+    axios.get(`${Config.serverUrl}/survey/${id}`, {
+      headers: { authorization: localStorage.getItem('token')}
+    })
+      .then(response => {
+        dispatch({
+          type: FETCH_SUBMISSIONS,
           payload: response.data
         });
       });

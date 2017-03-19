@@ -33,6 +33,7 @@ class Dashboard extends Component {
           		   <i className="fa fa-gears nudge-left"></i><span className="caret"></span>
           			</button>
           			<ul className="dropdown-menu text-left pull-right" aria-labelledby={`dropdown${key}`}>
+                   <li><Link to={`/submissions/${item._id}`}><i className="fa fa-pencil fa-fw"></i> Submissions</Link></li>
           			   <li><Link to={`/questionaire/${item._id}`}><i className="fa fa-pencil fa-fw"></i> Edit</Link></li>
                    <li><a href="#" onClick={this.deleteItem.bind(this, item._id)}><i className="fa fa-trash fa-fw"></i> Delete</a></li>
                 </ul>
@@ -86,7 +87,6 @@ class Dashboard extends Component {
 };
 
 function mapStateToProps(state) {
-  console.log("the mapStateToProps tate", state);
   return { questionaires: state.questionaire.questionaires };
 }
 
