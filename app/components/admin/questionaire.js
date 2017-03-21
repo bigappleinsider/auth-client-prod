@@ -18,18 +18,20 @@ const required = value => value ? undefined : 'Required';
 
 const renderQuestions = ({ fields, meta: { touched, error } }) => (
   <div>
-    <button type="button" className="btn btn-primary" onClick={() => fields.push({})}>
-      <i className="fa fa-plus"></i> Add Question
-    </button>
+    <div className="form-group">
+      <button type="button" className="btn btn-default" onClick={() => fields.push({})}>
+        <i className="fa fa-plus"></i> Add Question
+      </button>
+    </div>
     {fields.map((question, index) =>
       <div className="row" key={index}>
         <div className="col-md-11">
           <Field name={`${question}.questionText`} type="text" component={renderField} label="Question" />
         </div>
         <div className="col-md-1">
-          <button type="button" className="btn btn-default" title="Remove Question" onClick={() => fields.remove(index)}>
-            <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
-          </button>
+            <button type="button" className="btn btn-default" title="Remove Question" onClick={() => fields.remove(index)}>
+              <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
         </div>
       </div>
     )}
@@ -37,9 +39,6 @@ const renderQuestions = ({ fields, meta: { touched, error } }) => (
 );
 
 class Questionaire extends Component {
-  componentWillReceiveProps(nextProps) {
-    console.log("componentWillReceiveProps", nextProps);
-  }
   componentWillMount() {
     if (this.props.params.id !== 'new') {
       this.props.fetchQuestionaire(this.props.params.id);
@@ -77,7 +76,9 @@ class Questionaire extends Component {
           component={renderField}
           type="text" />
           <FieldArray name="questions" component={renderQuestions} />
-          <button type="submit" className="btn btn-primary">Save</button>
+          <div className="form-group">
+            <button type="submit" className="btn btn-primary">Save</button>
+          </div>
       </form>
     );
   }

@@ -5,7 +5,16 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 class Header extends Component {
-  renderLinks() {
+  renderMainNavLinks() {
+    if(this.props.authenticated) {
+      return (
+        <ul className="nav navbar-nav">
+          <li><Link to="/questionaire">Questionaires</Link></li>
+        </ul>
+      );
+    }
+  }
+  renderAuthLinks() {
     if (this.props.authenticated) {
       return (
         <li className="nav-item">
@@ -24,20 +33,39 @@ class Header extends Component {
     }
   }
   render() {
+    console.log("navbar", this.props);
     return (
-      <nav className="navbar navbar-light">
-        <Link to="/" className="navbar navbar-light">Redux Auth</Link>
-        <ul className="nav navbar-nav">
-          {this.renderLinks()}
-        </ul>
+      <nav className="navbar navbar-default navbar-fixed-top">
+        <div className="container-fluid">
+
+          <div className="navbar-header">
+            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span className="sr-only">Toggle navigation</span>
+              <span className="icon-bar"></span>
+              <span className="icon-bar"></span>
+              <span className="icon-bar"></span>
+            </button>
+            <a className="navbar-brand" href="#">Survey Master</a>
+          </div>
+
+          <div id="navbar" className="collapse navbar-collapse">
+            {this.renderMainNavLinks()}
+            <ul className="nav navbar-nav navbar-right">
+              {this.renderAuthLinks()}
+            </ul>
+          </div>
+
+        </div>
       </nav>
     );
   }
 }
 
 function mapStateToProps(state) {
+  console.log("nav mapStateToProps", state);
   return {
-    authenticated: state.auth.authenticated
+    authenticated: state.auth.authenticated,
+    user: state.user
   };
 }
 

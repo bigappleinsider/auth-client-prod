@@ -8,6 +8,8 @@ import queryString from 'query-string';
 
 import { Link } from 'react-router';
 
+import { dashboardTable } from '../../styles/dashboard.scss';
+
 class Dashboard extends Component {
   componentWillReceiveProps(nextProps) {
     if(this.props.location.query.page !== nextProps.location.query.page){
@@ -21,7 +23,6 @@ class Dashboard extends Component {
     this.props.deleteQuestionaire(id);
   }
   renderQuestionaire() {
-    console.log("renderQuestionaire", this.props);
     return this.props.questionaires.docs.map((item, key) => {
       return (
         <tr key={key}>
@@ -33,7 +34,7 @@ class Dashboard extends Component {
           		   <i className="fa fa-gears nudge-left"></i><span className="caret"></span>
           			</button>
           			<ul className="dropdown-menu text-left pull-right" aria-labelledby={`dropdown${key}`}>
-                   <li><Link to={`/submissions/${item._id}`}><i className="fa fa-pencil fa-fw"></i> Submissions</Link></li>
+                   <li><Link to={`/submissions/${item._id}`}><i className="fa fa-newspaper-o fa-fw"></i> Submissions</Link></li>
           			   <li><Link to={`/questionaire/${item._id}`}><i className="fa fa-pencil fa-fw"></i> Edit</Link></li>
                    <li><a href="#" onClick={this.deleteItem.bind(this, item._id)}><i className="fa fa-trash fa-fw"></i> Delete</a></li>
                 </ul>
@@ -44,8 +45,8 @@ class Dashboard extends Component {
     });
   }
   renderPagination() {
+    if(!this.props.questionaires || this.props.questionaires.pages<=1) { return; }
     const currentPage = this.props.location.query.page || 1;
-    console.log("renderPagination", currentPage);
     //const prevQuery = this.props.location.query;
     //prevQuery['page'] = this.props.location.query.page--;
     const prevUrl = `/questionaire?` + queryString.stringify({ ...this.props.location.query, page: parseInt(currentPage)-1});
@@ -56,7 +57,9 @@ class Dashboard extends Component {
           <li className={currentPage<=1?"disabled":""}>
             <Link to={currentPage<=1?"#":prevUrl}><span aria-hidden="true">&laquo;</span> Previous</Link>
           </li>
-          <li><Link to={nextUrl}>Next <span aria-hidden="true">&raquo;</span></Link></li>
+          <li className={currentPage>=this.props.questionaires.pages?"disabled":""}>
+            <Link to={nextUrl}>Next <span aria-hidden="true">&raquo;</span></Link>
+          </li>
         </ul>
     );
   }
@@ -68,7 +71,7 @@ class Dashboard extends Component {
             <i className="fa fa-plus"></i> Create Questionaire
           </Link>
         </div>
-        <table className="table table-hover">
+        <table className={`table table-hover ${dashboardTable}`}>
           <thead>
             <tr>
               <th>ID</th>

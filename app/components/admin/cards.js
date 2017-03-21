@@ -6,7 +6,10 @@ import * as actions from '../../actions';
 
 import { Link } from 'react-router';
 
-class Submissions extends Component {
+import { cards } from '../../styles/cards.scss';
+
+
+class Cards extends Component {
   componentWillMount() {
     this.props.fetchSubmissions(this.props.params.id);
   }
@@ -14,7 +17,9 @@ class Submissions extends Component {
     return (
       <div key={submission._id}>
         <h3>{submission.user.email}</h3>
+        <div className={cards}>
         {this.renderSubmissionGrid(submission)}
+        </div>
       </div>
     )
   }
@@ -31,19 +36,23 @@ class Submissions extends Component {
   renderSubmissions() {
       return (
         <div>
+        
           <div className="btn-group">
             <Link to="/questionaire" className="btn btn-default tt">
               <i className="fa fa-long-arrow-left"></i> Back to questionaires
             </Link>
           </div>
+
           {this.props.submissions.length > 0 &&
           <h2>Submissions for {this.props.submissions[0].questionaire.name}</h2>
           }
+
           {this.props.submissions.map((item) => this.renderSingleSubmission(item))}
 
           {this.props.submissions.length === 0 &&
             <h3>No submissions found</h3>
           }
+
         </div>
       );
   }
@@ -60,4 +69,4 @@ function mapStateToProps(state) {
     return { submissions: state.submissions.submissions };
 }
 
-export default connect(mapStateToProps, actions)(Submissions);
+export default connect(mapStateToProps, actions)(Cards);
