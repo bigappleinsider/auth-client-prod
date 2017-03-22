@@ -34,6 +34,8 @@ class Dashboard extends Component {
           		   <i className="fa fa-gears nudge-left"></i><span className="caret"></span>
           			</button>
           			<ul className="dropdown-menu text-left pull-right" aria-labelledby={`dropdown${key}`}>
+                  <li><Link to={`/survey/${item._id}`} target="_blank"><i className="fa fa-share-alt fa-fw"></i> Share Survey</Link></li>
+                  <li><Link to={`/cards/${item._id}`}><i className="fa fa-book fa-fw"></i> Submission Cards</Link></li>
                    <li><Link to={`/submissions/${item._id}`}><i className="fa fa-newspaper-o fa-fw"></i> Submissions</Link></li>
           			   <li><Link to={`/questionaire/${item._id}`}><i className="fa fa-pencil fa-fw"></i> Edit</Link></li>
                    <li><a href="#" onClick={this.deleteItem.bind(this, item._id)}><i className="fa fa-trash fa-fw"></i> Delete</a></li>
