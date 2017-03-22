@@ -12,6 +12,7 @@ import Questionaire from './components/admin/questionaire';
 import Submissions from './components/admin/submissions';
 import Cards from './components/admin/cards';
 import Survey from './components/user/survey';
+import Thankyou from './components/thankyou';
 
 
 import RequireAuth from './components/auth/require_auth';
@@ -30,5 +31,6 @@ export default (
 		<Route path="submissions/:id" component={RequireAuth(Submissions)} />
 		<Route path="cards/:id" component={RequireAuth(Cards)} />
 		<Route path="survey/:id" component={RequireAuth(Survey)} />
+		<Route path="thankyou" component={RequireAuth(Thankyou)} />
 	</Route>
 );

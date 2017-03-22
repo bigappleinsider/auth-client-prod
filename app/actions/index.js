@@ -121,7 +121,7 @@ export function filloutSurvey({ questions, id }) {
     })
       .then(response => {
         //should be static thank you page instead
-        browserHistory.push('/questionaire');
+        browserHistory.push('/thankyou');
       });
   };
 }
